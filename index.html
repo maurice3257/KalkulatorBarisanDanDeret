@@ -2,214 +2,211 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <title>Kalkulator Barisan & Deret Fleksibel</title>
+    <title>Kalkulator Matdis - Barisan & Deret</title>
+    <link href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex:opsz,wght@8..144,100..1000&family=Roboto+Mono:wght@400;600&display=swap" rel="stylesheet">
+    
     <style>
-        /* CSS Dasar - Gaya Mahasiswa IT */
-        body {
-            font-family: 'Segoe UI', Tahoma, sans-serif;
-            background-color: #f0f2f5;
-            margin: 0;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+        body { 
+            font-family: 'Google Sans Flex', sans-serif; 
+            background-color: #f8f9fa; 
+            margin: 0; 
+            padding: 20px; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            color: #202124;
         }
 
-        h1 { color: #1a73e8; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 2px; }
+        h1 { font-weight: 700; color: #1a73e8; margin-bottom: 30px; letter-spacing: -0.5px; }
 
-        /* Container Utama Landscape */
-        .main-wrapper {
-            display: flex;
-            gap: 20px;
-            width: 100%;
-            max-width: 1100px;
-            min-height: 550px;
+        .main-wrapper { 
+            display: flex; 
+            gap: 24px; 
+            width: 100%; 
+            max-width: 1150px; 
+            min-height: 550px; 
         }
 
-        /* Kolom Kiri: Input */
-        .panel-input {
-            flex: 1;
-            background: white;
-            padding: 25px;
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        /* Panel Kiri (Input) & Kanan (Output) */
+        .panel-left, .panel-right { 
+            background: white; 
+            padding: 30px; 
+            border-radius: 20px; 
+            box-shadow: 0 1px 3px rgba(60,64,67,0.3), 0 4px 8px rgba(60,64,67,0.15); 
+            flex: 1; 
         }
 
-        /* Kolom Kanan: Hasil & Grafik */
-        .panel-output {
-            flex: 1.2;
-            background: white;
-            padding: 25px;
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            display: flex;
-            flex-direction: column;
+        .input-group { margin-bottom: 20px; }
+        label { display: block; font-weight: 500; margin-bottom: 8px; font-size: 14px; color: #5f6368; }
+        
+        input, select { 
+            width: 100%; 
+            padding: 14px; 
+            border: 1px solid #dadce0; 
+            border-radius: 12px; 
+            box-sizing: border-box; 
+            font-family: 'Google Sans Flex', sans-serif;
+            font-size: 15px;
+            transition: all 0.2s ease;
         }
 
-        .input-group { margin-bottom: 15px; }
-        label { display: block; font-weight: bold; margin-bottom: 5px; color: #444; }
-        input, select {
-            width: 100%;
+        input:focus { border: 2px solid #1a73e8; outline: none; }
+
+        .btn-hitung { 
+            width: 100%; 
+            padding: 16px; 
+            background: #1a73e8; 
+            color: white; 
+            border: none; 
+            border-radius: 12px; 
+            font-weight: 600; 
+            font-size: 16px; 
+            cursor: pointer; 
+            transition: background 0.2s;
+            margin-top: 10px;
+        }
+
+        .btn-hitung:hover { background: #1765cc; box-shadow: 0 1px 3px rgba(0,0,0,0.2); }
+
+        /* Area Hasil */
+        .display-box { 
+            border: 1px solid #dadce0; 
+            border-radius: 16px; 
+            padding: 20px; 
+            background: #ffffff; 
+            min-height: 400px;
+        }
+
+        .step-box { 
+            background: #f1f3f4; 
+            padding: 16px; 
+            border-radius: 12px; 
+            margin-bottom: 12px; 
+            font-size: 14px; 
+            line-height: 1.6;
+        }
+
+        .step-title { font-weight: 700; color: #1a73e8; display: block; margin-bottom: 5px; text-transform: uppercase; font-size: 11px; letter-spacing: 0.5px; }
+
+        .barisan-visual { 
+            font-family: 'Roboto Mono', monospace; 
+            color: #d93025; 
+            font-weight: 600; 
+            font-size: 15px;
+            background: #fce8e6;
             padding: 12px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            box-sizing: border-box;
-            font-size: 14px;
-        }
-
-        button {
-            width: 100%;
-            padding: 15px;
-            background-color: #4285f4;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-weight: bold;
-            font-size: 16px;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-
-        button:hover { background-color: #1a73e8; }
-
-        /* Area Hasil di Panel Kanan */
-        .display-box {
-            border: 2px dashed #ddd;
-            border-radius: 8px;
-            padding: 15px;
-            flex-grow: 1;
-            overflow-y: auto;
-            background-color: #fafafa;
-        }
-
-        .step-box {
-            background: #e8f0fe;
-            padding: 10px;
-            border-radius: 6px;
-            margin-bottom: 10px;
-            border-left: 4px solid #4285f4;
-            font-size: 14px;
-            line-height: 1.5;
-        }
-
-        .barisan-visual {
-            font-family: 'Courier New', monospace;
-            color: #d93025;
-            font-weight: bold;
+            border-radius: 10px;
+            display: block;
+            margin-top: 5px;
             word-break: break-all;
         }
+
+        b { color: #1a73e8; }
     </style>
 </head>
 <body>
 
-    <h1>Kalkulator Barisan & Deret Fleksibel</h1>
+    <h1>Kalkulator Barisan & Deret</h1>
 
     <div class="main-wrapper">
-        <div class="panel-input">
+        <div class="panel-left">
             <div class="input-group">
-                <label>Pilih Tipe Barisan:</label>
-                <select id="mode" onchange="resetTampilan()">
+                <label>Tipe Barisan</label>
+                <select id="mode" onchange="toggleBertingkat()">
                     <option value="aritmatika">Aritmatika (Tingkat 1)</option>
                     <option value="bertingkat">Aritmatika Bertingkat (Tingkat 2)</option>
                     <option value="geometri">Geometri</option>
                 </select>
             </div>
-
             <div class="input-group">
-                <label>Suku Pertama (a):</label>
-                <input type="number" id="inpA" placeholder="Kosongkan jika tidak ada">
+                <label>Suku Pertama (a)</label>
+                <input type="number" id="inpA" placeholder="Masukkan nilai a">
             </div>
-
             <div class="input-group">
-                <label id="lblB">Beda (b):</label>
-                <input type="number" id="inpB" placeholder="Kosongkan jika tidak ada">
+                <label id="lblB">Beda (b)</label>
+                <input type="number" id="inpB" placeholder="Masukkan nilai b/r">
             </div>
-
-            <div id="groupC" class="input-group" style="display:none;">
-                <label>Beda Tingkat 2 (c):</label>
-                <input type="number" id="inpC" placeholder="Hanya untuk bertingkat">
+            <div class="input-group" id="boxC" style="display:none;">
+                <label>Beda Tingkat 2 (c)</label>
+                <input type="number" id="inpC" placeholder="Masukkan nilai c">
             </div>
-
             <div class="input-group">
-                <label>Suku Ke-n (n):</label>
+                <label>Jumlah Suku (n)</label>
                 <input type="number" id="inpN" placeholder="Contoh: 10">
             </div>
-
-            <div class="input-group">
-                <label>Nilai Suku ke-n (Un):</label>
-                <input type="number" id="inpUn" placeholder="Kosongkan jika dicari">
-            </div>
-
-            <button onclick="hitungLandscape()">Hitung & Tampilkan Hasil</button>
+            
+            <button class="btn-hitung" onclick="kalkulasi()">Hitung & Tampilkan Cara</button>
         </div>
 
-        <div class="panel-output">
-            <label>Laporan Perhitungan:</label>
+        <div class="panel-right">
+            <label>Laporan Perhitungan</label>
             <div id="displayArea" class="display-box">
-                <p style="text-align: center; color: #888; margin-top: 50px;">
-                    Hasil perhitungan dan cara kerja akan muncul di sini...
+                <p style="text-align: center; color: #70757a; margin-top: 150px;">
+                    Hasil perhitungan akan muncul di sini secara otomatis.
                 </p>
             </div>
         </div>
     </div>
 
     <script>
-        function resetTampilan() {
+        function toggleBertingkat() {
             let mode = document.getElementById('mode').value;
-            document.getElementById('groupC').style.display = (mode === 'bertingkat') ? 'block' : 'none';
-            document.getElementById('lblB').innerText = (mode === 'geometri') ? "Rasio (r):" : "Beda (b):";
+            document.getElementById('boxC').style.display = (mode === 'bertingkat') ? 'block' : 'none';
+            document.getElementById('lblB').innerText = (mode === 'geometri') ? "Rasio (r)" : "Beda (b)";
         }
 
-        function hitungLandscape() {
+        function kalkulasi() {
             let mode = document.getElementById('mode').value;
-            let a = document.getElementById('inpA').value !== "" ? parseFloat(document.getElementById('inpA').value) : null;
-            let b = document.getElementById('inpB').value !== "" ? parseFloat(document.getElementById('inpB').value) : null;
+            let a = parseFloat(document.getElementById('inpA').value);
+            let b = parseFloat(document.getElementById('inpB').value);
             let c = parseFloat(document.getElementById('inpC').value) || 0;
             let n = parseInt(document.getElementById('inpN').value);
-            let unInp = document.getElementById('inpUn').value !== "" ? parseFloat(document.getElementById('inpUn').value) : null;
 
-            if (!n) { alert("Masukkan nilai n!"); return; }
-
-            let un, sn = 0, caraUn = "", barisan = [];
-
-            // Logika Aritmatika & Geometri (Sama seperti sebelumnya)
-            if (mode === "aritmatika") {
-                if (a === null && unInp !== null) a = unInp - (n - 1) * b;
-                if (b === null && unInp !== null) b = (unInp - a) / (n - 1);
-                un = a + (n - 1) * b;
-                sn = (n / 2) * (a + un);
-                caraUn = `Un = a + (n-1)b = ${a} + (${n}-1)${b} = ${un}`;
-            } else if (mode === "geometri") {
-                if (a === null) a = unInp / Math.pow(b, n - 1);
-                un = a * Math.pow(b, n - 1);
-                sn = (b === 1) ? (a * n) : (a * (Math.pow(b, n) - 1) / (b - 1));
-                caraUn = `Un = a * r^(n-1) = ${a} * ${b}^(${n}-1) = ${un}`;
-            } else {
-                un = a + (n-1)*b + 0.5*(n-1)*(n-2)*c;
-                caraUn = `Un = a + (n-1)b + ((n-1)(n-2)c)/2 = ${un}`;
-                // Sn bertingkat lebih kompleks, kita hitung via loop
+            if(isNaN(a) || isNaN(b) || isNaN(n)) {
+                alert("Mohon lengkapi semua input data.");
+                return;
             }
 
-            // Generate Barisan (Limit 10)
-            for(let i=1; i<=n; i++) {
-                let val;
-                if(mode==="aritmatika") val = a + (i-1)*b;
-                else if(mode==="geometri") val = a * Math.pow(b, i-1);
-                else val = a + (i-1)*b + 0.5*(i-1)*(i-2)*c;
-                
-                if(mode === "bertingkat") sn += val; 
+            let un = 0, sn = 0, barisan = [], caraUn = "", caraSn = "";
 
-                if(i <= 9 || i === n) barisan.push(val);
+            // Logika Rumus dan Langkah-langkah
+            if (mode === "aritmatika") {
+                un = a + (n - 1) * b;
+                sn = (n / 2) * (a + un);
+                caraUn = `U<sub>n</sub> = a + (n-1)b <br> U<sub>${n}</sub> = ${a} + (${n}-1)${b} = <b>${un}</b>`;
+                caraSn = `S<sub>n</sub> = n/2 * (a + U<sub>n</sub>) <br> S<sub>${n}</sub> = ${n}/2 * (${a} + ${un}) = <b>${sn}</b>`;
+            } else if (mode === "geometri") {
+                un = a * Math.pow(b, n - 1);
+                sn = (b === 1) ? (a * n) : (a * (Math.pow(b, n) - 1) / (b - 1));
+                caraUn = `U<sub>n</sub> = a · r<sup>n-1</sup> <br> U<sub>${n}</sub> = ${a} · ${b}<sup>${n-1}</sup> = <b>${un}</b>`;
+                caraSn = `S<sub>n</sub> = a(r<sup>n</sup> - 1) / (r-1) <br> S<sub>${n}</sub> = ${a}(${b}<sup>${n}</sup> - 1) / (${b}-1) = <b>${sn.toFixed(2)}</b>`;
+            } else {
+                un = a + (n-1)*b + 0.5*(n-1)*(n-2)*c;
+                caraUn = `U<sub>n</sub> = a + (n-1)b + 1/2(n-1)(n-2)c <br> U<sub>${n}</sub> = ${a} + (${n}-1)${b} + 0.5(${n}-1)(${n}-2)${c} = <b>${un}</b>`;
+                // Hitung manual Sn untuk aritmatika bertingkat
+                for(let k=1; k<=n; k++) {
+                    sn += a + (k-1)*b + 0.5*(k-1)*(k-2)*c;
+                }
+                caraSn = `S<sub>n</sub> = Σ U<sub>i</sub> (Jumlah seluruh suku hingga n) <br> S<sub>${n}</sub> = <b>${sn}</b>`;
+            }
+
+            // Membentuk visual barisan (limit 10 angka)
+            for(let i=1; i<=n; i++) {
+                let v;
+                if(mode==="aritmatika") v = a + (i-1)*b;
+                else if(mode==="geometri") v = a * Math.pow(b, i-1);
+                else v = a + (i-1)*b + 0.5*(i-1)*(i-2)*c;
+                
+                if(i <= 9 || i === n) barisan.push(v);
                 if(i === 9 && n > 10) barisan.push("...");
             }
 
-            // Update Panel Kanan
-            let area = document.getElementById('displayArea');
-            area.innerHTML = `
-                <div class="step-box"><strong>DIKETAHUI:</strong><br>a = ${a}, b/r = ${b}, n = ${n} ${mode==='bertingkat'?', c = '+c:''}</div>
-                <div class="step-box"><strong>BARISAN:</strong><br><span class="barisan-visual">${barisan.join(", ")}</span></div>
-                <div class="step-box"><strong>CARA UN:</strong><br>${caraUn}</div>
-                <div class="step-box"><strong>HASIL AKHIR:</strong><br>Un = ${un.toFixed(2)}<br>Sn = ${sn.toFixed(2)}</div>
+            // Update Panel Hasil
+            document.getElementById('displayArea').innerHTML = `
+                <div class="step-box"><span class="step-title">Diketahui</span>a = ${a}, ${mode==='geometri'?'r':'b'} = ${b}${mode==='bertingkat'?', c = '+c:''}, n = ${n}</div>
+                <div class="step-box"><span class="step-title">Barisan</span><span class="barisan-visual">${barisan.join(", ")}</span></div>
+                <div class="step-box"><span class="step-title">Pengerjaan Suku Ke-n (U<sub>n</sub>)</span>${caraUn}</div>
+                <div class="step-box"><span class="step-title">Pengerjaan Deret (S<sub>n</sub>)</span>${caraSn}</div>
             `;
         }
     </script>
